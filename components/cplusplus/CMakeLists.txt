@@ -1,0 +1,5 @@
+file(GLOB cplusplus_SRCS ./*.cpp ./*.c)
+if(DEFINED RT_USING_CPLUSPLUS)
+  list(APPEND components_SRCS ${cplusplus_SRCS})
+  list(APPEND components_INCS ${CMAKE_CURRENT_LIST_DIR})
+endif()
