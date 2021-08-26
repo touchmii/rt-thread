@@ -7,10 +7,14 @@ if(DEFINED RT_USING_POSIX AND DEFINED RT_USING_POSIX_AIO)
 
 endif()
 if(DEFINED RT_USING_LIBC)
-  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/common/time.c)
-  list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/aio)
-
+  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/common/time.c)
+  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/common/unistd.c)
+  list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/compilers/common)
+elseif(DEFINED RT_LIBC_USING_TIME AND NOT DEFINED RT_USING_MINILIBC)  
+  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/common/time.c)
+  list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/compilers/common)
 endif()
+
 if(DEFINED RT_USING_MINILIBC AND NOT DEFINED RT_USING_LIBC)
   file(GLOB minilic_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/minilibc/*.c)
 

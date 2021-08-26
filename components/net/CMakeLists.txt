@@ -252,7 +252,6 @@ if(DEFINED RT_USING_NETDEV) # TODO gcc
 endif()
 
 if(DEFINED RT_USING_SAL)
-  message(STATUS "FUCK")
 
   list(APPEND net_SRCS ${CMAKE_CURRENT_LIST_DIR}/sal_socket/src/sal_socket.c)
   list(APPEND net_SRCS ${CMAKE_CURRENT_LIST_DIR}/sal_socket/socket/net_netdb.c)
@@ -280,7 +279,6 @@ if(DEFINED RT_USING_SAL)
   endif()
 
   if(DEFINED SAL_USING_POSIX)
-  message(STATUS "FUCK 2")
     list(APPEND net_SRCS
          ${CMAKE_CURRENT_LIST_DIR}/sal_socket/socket/net_sockets.c)    
     list(APPEND net_SRCS
@@ -289,7 +287,6 @@ if(DEFINED RT_USING_SAL)
     list(APPEND net_INCS ${CMAKE_CURRENT_LIST_DIR}/sal_socket/include/dfs_net)
     
     if(NOT DEFINED HAVE_SYS_SELECT_H)
-      message(STATUS "FUCK 3")
       list(APPEND net_INCS
            ${CMAKE_CURRENT_LIST_DIR}/sal_socket/include/dfs_net/sys_select)
     endif()
@@ -298,7 +295,6 @@ if(DEFINED RT_USING_SAL)
 
   if(DEFINED HAVE_SYS_SELECT_H)
     list(APPEND net_INCS ${CMAKE_CURRENT_LIST_DIR}/sal_socket/include/socket/sys_socket)
-    message(STATUS "FUCK")
     # message(STATUS "net incs ${net_INCS}")
   endif()
 
@@ -312,6 +308,6 @@ set(net_INCS
     ${net_INCS}
     CACHE INTERNAL "")
 
-message(STATUS "net incs ${net_INCS}")    
-message(STATUS "net srcs ${net_SRCS}")    
+# message(STATUS "net incs ${net_INCS}")    
+# message(STATUS "net srcs ${net_SRCS}")    
 
