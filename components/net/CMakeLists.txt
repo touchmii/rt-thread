@@ -50,7 +50,7 @@ set(lwipapi_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/api_lib.c
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/api_msg.c
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/err.c
-    ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/if_api.c
+    # ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/if_api.c
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/netbuf.c
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/netdb.c
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/api/netifapi.c
@@ -192,7 +192,7 @@ set(lwipping_SRCS ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/apps/ping/ping.c)
 set(lwip_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/lwip-2.0.2/src/arch/sys_arch.c
     ${lwipcore_SRCS}
-    ${lwipcore_altcp_SRCS}
+    # ${lwipcore_altcp_SRCS}
     ${lwipapi_SRCS}
     ${lwipnetif_SRCS}
     ${lwipsixlowpan_SRCS}

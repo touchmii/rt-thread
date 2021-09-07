@@ -1,6 +1,19 @@
 set(libc_SRCS "")
 set(libc_INCS "")
 
+if(DEFINED RT_USING_ARM_LIBC)
+  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc/libc.c)
+  list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc/mem_std.c)
+  if(DEFINED RT_USING_DFS)
+    list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc/stdio.c)
+  endif()    
+  if(DEFINED RT_USING_MODULE)
+    list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc/lib_syms.c)
+  endif()
+  list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc)  
+  list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/compilers/armlibc/sys)  
+endif()
+
 if(DEFINED RT_USING_POSIX AND DEFINED RT_USING_POSIX_AIO)
   list(APPEND libc_SRCS ${CMAKE_CURRENT_LIST_DIR}/aio/posix_aio.c)
   list(APPEND libc_INCS ${CMAKE_CURRENT_LIST_DIR}/aio)
@@ -23,7 +36,7 @@ if(DEFINED RT_USING_MINILIBC AND NOT DEFINED RT_USING_LIBC)
 
 endif()
 
-if(DEFINED RT_USING_LIBC) # TODO gcc
+if(DEFINED RT_USING_NEWLIB AND DEFINED RT_USING_LIBC) # TODO gcc
   file(GLOB newlibc_SRCS ${CMAKE_CURRENT_LIST_DIR}/compilers/newlib/*.c)
 
   list(APPEND libc_SRCS ${newlibc_SRCS})

@@ -14,6 +14,8 @@
 #ifdef __CC_ARM
 /* avoid the heap and heap-using library functions supplied by arm */
 #pragma import(__use_no_heap)
+#elif defined(__ARMCC_VERSION)
+__asm(".global __use_no_heap");
 #endif
 
 void *malloc(size_t n)

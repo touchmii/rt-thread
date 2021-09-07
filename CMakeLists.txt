@@ -39,23 +39,45 @@ if (DEFINED RT_USING_DEVICE)
   list(APPEND rt-thread_SRCS ${rt_DIR}/src/device.c)
 endif()
 
+
 set(cortex-m4_SRCS ${rt_DIR}/libcpu/arm/cortex-m4/cpuport.c)
-set(cortex-m4_ASM ${rt_DIR}/libcpu/arm/cortex-m4/context_gcc.S)
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  set(cortex-m4_ASM ${rt_DIR}/libcpu/arm/cortex-m4/context_gcc.S)
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "ARMClang")
+  set(cortex-m4_ASM ${rt_DIR}/libcpu/arm/cortex-m4/context_rvds.S)
+endif()
 
-list(APPEND rt-thread_SRCS ${cortex-m4_SRCS} ${cortex-m4_ASM}
-     # ${finsh_SRCS} ${libc_SRCS}
-     ${components_SRCS})
+list(APPEND rt-thread_SRCS 
+   ${cortex-m4_SRCS}
+   ${cortex-m4_ASM}
+  # ${finsh_SRCS} ${libc_SRCS}
+  ${components_SRCS})
 
-set(rt-thread_INCS ${rt_DIR}/include ${rt_DIR}/include/libc
-                   # CACHE INTERNAL ""
+set(rt-thread_INCS 
+  ${rt_DIR}/include 
+  ${rt_DIR}/include/libc
+  # CACHE INTERNAL ""
 )
-list(APPEND rt-thread_INCS ${components_INCS})
+list(APPEND rt-thread_INCS 
+  ${components_INCS}
+)
+
 set(rt-thread_SRCS
     ${rt-thread_SRCS}
-    CACHE INTERNAL "")
+    CACHE INTERNAL ""
+)
+
 set(rt-thread_INCS
     ${rt-thread_INCS}
-    CACHE INTERNAL "")
+    CACHE INTERNAL ""
+)
+
+add_library(rt-thread STATIC ${rt-thread_SRCS}) 
+target_include_directories(rt-thread PUBLIC 
+  ${rt-thread_INCS}
+  ${CMAKE_CURRENT_LIST_DIR}/../
+) 
+
 # message("rt-thread src ${rt-thread_SRCS}")
 # message("rt-thread inc ${rt-thread_INCS}")
 # message("rt-thread components inc ${components_INCS}") message("lwip src

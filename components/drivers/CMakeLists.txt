@@ -38,7 +38,7 @@ if(DEFINED RT_USING_I2C)
   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/i2c/i2c_dev.c)
 
   if(DEFINED RT_USING_I2C_BITOPS)
-    list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/i2c/i2c-bit-opt.c)
+    list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/i2c/i2c-bit-ops.c)
   endif()
 
 endif()
@@ -51,18 +51,21 @@ if(DEFINED RT_USING_ADC)
   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/adc.c)
 endif()
 
+if(DEFINED RT_USING_DAC)
+  list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/dac.c)
+endif()
+
 if(DEFINED RT_USING_PWM)
   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/rt_drv_pwm.c)
 endif()
 
-# if(DEFINED RT_USING_PLUSE_ENCODER)
-#   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/pluse_encoder.c)
+if(DEFINED RT_USING_PULSE_ENCODER) 
+  list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/pulse_encoder.c)
+endif()
 
-# endif()
-
-# if(DEFINED RT_USING_INPUT_CAPTURE)
-#   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/rt_inputcapture.c)
-# endif()
+if(DEFINED RT_USING_INPUT_CAPTURE) 
+  list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/misc/rt_inputcapture.c) 
+endif()
 
 if(DEFINED RT_USING_MTD_NOR)
   list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/mtd/mtd_nor.c)
@@ -165,15 +168,16 @@ endif()
 # TODO usb device
 
 if(DEFINED RT_USING_USB_HOST)
+  # message(STATUS "use usb")
 
   list(APPEND com_drivers_SRCS
-       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/core.c)
-  list(APPEND com_drivers_SRCS
-       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/driver.c)
-  list(APPEND com_drivers_SRCS
-       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/usbhost.c)
-  list(APPEND com_drivers_SRCS ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/hub.c)
-  list(APPEND com_drivers_INCS ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/include)
+       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/usbhost_core.c
+       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/driver.c
+       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/usbhost.c
+       ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/core/hub.c
+       )
+
+  list(APPEND com_drivers_INCS ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/class)
 
   if(DEFINED RT_USBH_ADK)
     list(APPEND com_drivers_SRCS
@@ -181,12 +185,12 @@ if(DEFINED RT_USING_USB_HOST)
          ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/class/adkapp.c)
   endif()
 
-  if(DEFINED RT_USBH_MSTOREGE)
+  if(DEFINED RT_USBH_MSTORAGE)
     list(APPEND com_drivers_SRCS
          ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/class/mass.c
          ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/class/udisk.c)
   endif()
-  
+
   if(DEFINED RT_USBH_HID)
     list(APPEND com_drivers_SRCS
          ${CMAKE_CURRENT_LIST_DIR}/usb/usbhost/class/hid.c)

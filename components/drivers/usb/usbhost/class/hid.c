@@ -26,7 +26,7 @@ static rt_list_t _protocal_list;
  *
  * @return the error code, RT_EOK on successfully.
 */
-rt_err_t rt_usbh_hid_set_idle(struct uintf* intf, int duration, int report_id)
+rt_err_t rt_usbh_hid_set_idle(struct uhintf* intf, int duration, int report_id)
 {
     struct urequest setup;
     struct uinstance* device;
@@ -40,10 +40,10 @@ rt_err_t rt_usbh_hid_set_idle(struct uintf* intf, int duration, int report_id)
 
     setup.request_type = USB_REQ_TYPE_DIR_OUT | USB_REQ_TYPE_CLASS |
         USB_REQ_TYPE_INTERFACE;
-    setup.request = USB_REQ_SET_IDLE;
-    setup.index = 0;
-    setup.length = 0;
-    setup.value = (duration << 8 )| report_id;
+    setup.bRequest = USB_REQ_SET_IDLE;
+    setup.wIndex = 0;
+    setup.wLength = 0;
+    setup.wValue = (duration << 8 )| report_id;
 
     if(rt_usb_hcd_control_xfer(device->hcd, device, &setup, RT_NULL, 0,
         timeout) == 0) return RT_EOK;
@@ -59,7 +59,7 @@ rt_err_t rt_usbh_hid_set_idle(struct uintf* intf, int duration, int report_id)
  *
  * @return the error code, RT_EOK on successfully.
 */
-rt_err_t rt_usbh_hid_get_report(struct uintf* intf, rt_uint8_t type,
+rt_err_t rt_usbh_hid_get_report(struct uhintf* intf, rt_uint8_t type,
     rt_uint8_t id, rt_uint8_t *buffer, rt_size_t size)
 {
     struct urequest setup;
@@ -74,10 +74,10 @@ rt_err_t rt_usbh_hid_get_report(struct uintf* intf, rt_uint8_t type,
 
     setup.request_type = USB_REQ_TYPE_DIR_IN | USB_REQ_TYPE_CLASS |
         USB_REQ_TYPE_INTERFACE;
-    setup.request = USB_REQ_GET_REPORT;
-    setup.index = intf->intf_desc->bInterfaceNumber;
-    setup.length = size;
-    setup.value = (type << 8 ) + id;
+    setup.bRequest = USB_REQ_GET_REPORT;
+    setup.wIndex = intf->intf_desc->bInterfaceNumber;
+    setup.wLength = size;
+    setup.wValue = (type << 8 ) + id;
 
     if(rt_usb_hcd_control_xfer(device->hcd, device, &setup, buffer, size,
         timeout) == size) return RT_EOK;
@@ -93,7 +93,7 @@ rt_err_t rt_usbh_hid_get_report(struct uintf* intf, rt_uint8_t type,
  *
  * @return the error code, RT_EOK on successfully.
 */
-rt_err_t rt_usbh_hid_set_report(struct uintf* intf, rt_uint8_t *buffer, rt_size_t size)
+rt_err_t rt_usbh_hid_set_report(struct uhintf* intf, rt_uint8_t *buffer, rt_size_t size)
 {
     struct urequest setup;
     struct uinstance* device;
@@ -107,10 +107,10 @@ rt_err_t rt_usbh_hid_set_report(struct uintf* intf, rt_uint8_t *buffer, rt_size_
 
     setup.request_type = USB_REQ_TYPE_DIR_OUT | USB_REQ_TYPE_CLASS |
         USB_REQ_TYPE_INTERFACE;
-    setup.request = USB_REQ_SET_REPORT;
-    setup.index = intf->intf_desc->bInterfaceNumber;
-    setup.length = size;
-    setup.value = 0x02 << 8;
+    setup.bRequest = USB_REQ_SET_REPORT;
+    setup.wIndex = intf->intf_desc->bInterfaceNumber;
+    setup.wLength = size;
+    setup.wValue = 0x02 << 8;
 
     if(rt_usb_hcd_control_xfer(device->hcd, device, &setup, buffer, size,
         timeout) == size) return RT_EOK;
@@ -125,7 +125,7 @@ rt_err_t rt_usbh_hid_set_report(struct uintf* intf, rt_uint8_t *buffer, rt_size_
  *
  * @return the error code, RT_EOK on successfully.
  */
-rt_err_t rt_usbh_hid_set_protocal(struct uintf* intf, int protocol)
+rt_err_t rt_usbh_hid_set_protocal(struct uhintf* intf, int protocol)
 {
     struct urequest setup;
     struct uinstance* device;
@@ -139,10 +139,10 @@ rt_err_t rt_usbh_hid_set_protocal(struct uintf* intf, int protocol)
 
     setup.request_type = USB_REQ_TYPE_DIR_OUT | USB_REQ_TYPE_CLASS |
         USB_REQ_TYPE_INTERFACE;
-    setup.request = USB_REQ_SET_PROTOCOL;
-    setup.index = 0;
-    setup.length = 0;
-    setup.value = protocol;
+    setup.bRequest = USB_REQ_SET_PROTOCOL;
+    setup.wIndex = 0;
+    setup.wLength = 0;
+    setup.wValue = protocol;
 
     if(rt_usb_hcd_control_xfer(device->hcd, device, &setup, RT_NULL, 0,
         timeout) == 0) return RT_EOK;
@@ -159,7 +159,7 @@ rt_err_t rt_usbh_hid_set_protocal(struct uintf* intf, int protocol)
  *
  * @return the error code, RT_EOK on successfully.
  */
-rt_err_t rt_usbh_hid_get_report_descriptor(struct uintf* intf,
+rt_err_t rt_usbh_hid_get_report_descriptor(struct uhintf* intf,
     rt_uint8_t *buffer, rt_size_t size)
 {
     struct urequest setup;
@@ -174,10 +174,10 @@ rt_err_t rt_usbh_hid_get_report_descriptor(struct uintf* intf,
 
     setup.request_type = USB_REQ_TYPE_DIR_IN | USB_REQ_TYPE_STANDARD|
         USB_REQ_TYPE_INTERFACE;
-    setup.request = USB_REQ_GET_DESCRIPTOR;
-    setup.index = 0;
-    setup.length = size;
-    setup.value = USB_DESC_TYPE_REPORT << 8;
+    setup.bRequest = USB_REQ_GET_DESCRIPTOR;
+    setup.wIndex = 0;
+    setup.wLength = size;
+    setup.wValue = USB_DESC_TYPE_REPORT << 8;
 
     if(rt_usb_hcd_control_xfer(device->hcd, device, &setup, buffer, size,
         timeout) == size) return RT_EOK;
@@ -220,15 +220,15 @@ static void rt_usbh_hid_callback(void* context)
     RT_ASSERT(context != RT_NULL);
 
     pipe = (upipe_t)context;
-    hid = (struct uhid*)pipe->intf->user_data;
+    hid = (struct uhid*)pipe->user_data;
 
     /* invoke protocal callback function */
     hid->protocal->callback((void*)hid);
 
     /* parameter check */
-     RT_ASSERT(pipe->intf->device->hcd != RT_NULL);
+     RT_ASSERT(pipe->inst->hcd != RT_NULL);
 
-    rt_usb_hcd_int_xfer(pipe->intf->device->hcd, pipe, hid->buffer,
+    rt_usb_hcd_int_xfer(pipe->inst->hcd, pipe, hid->buffer,
         pipe->ep.wMaxPacketSize, timeout);
 }
 
@@ -268,7 +268,7 @@ static rt_err_t rt_usbh_hid_enable(void* arg)
     int i = 0, pro_id;
     uprotocal_t protocal;
     struct uhid* hid;
-    struct uintf* intf = (struct uintf*)arg;
+    struct uhintf* intf = (struct uhintf*)arg;
     int timeout = USB_TIMEOUT_BASIC;
     upipe_t pipe;
 
@@ -319,7 +319,7 @@ static rt_err_t rt_usbh_hid_enable(void* arg)
         if(!(ep_desc->bEndpointAddress & USB_DIR_IN)) continue;
 
         ret = rt_usb_hcd_alloc_pipe(intf->device->hcd, &hid->pipe_in,
-            intf, ep_desc, rt_usbh_hid_callback);
+            intf->device, ep_desc);
         if(ret != RT_EOK) return ret;
     }
 
@@ -328,10 +328,10 @@ static rt_err_t rt_usbh_hid_enable(void* arg)
     pipe = hid->pipe_in;
 
     /* parameter check */
-     RT_ASSERT(pipe->intf->device->hcd != RT_NULL);
+     RT_ASSERT(pipe->inst->hcd != RT_NULL);
 
-    rt_usb_hcd_int_xfer(pipe->intf->device->hcd, hid->pipe_in,
-        hid->buffer, hid->pipe_in->ep.wMaxPacketSize, timeout);
+    rt_usb_hcd_int_xfer(pipe->inst->hcd, pipe,
+        hid->buffer, pipe->ep.wMaxPacketSize, timeout);
     return RT_EOK;
 }
 
@@ -346,7 +346,7 @@ static rt_err_t rt_usbh_hid_enable(void* arg)
 static rt_err_t rt_usbh_hid_disable(void* arg)
 {
     struct uhid* hid;
-    struct uintf* intf = (struct uintf*)arg;
+    struct uhintf* intf = (struct uhintf*)arg;
 
     RT_ASSERT(intf != RT_NULL);
 
